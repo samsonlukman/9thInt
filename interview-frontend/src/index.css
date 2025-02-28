@@ -1,0 +1,36 @@
+body {
+  transition: background 0.3s, color 0.3s;
+}
+
+body.light {
+  background: #ffffff;
+  color: #000000;
+}
+
+body.dark {
+  background: #333333;
+  color: #ffffff;
+}
+
+.container {
+  text-align: center;
+  margin-top: 20vh;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.light button {
+  background: #000000;
+  color: #ffffff;
+}
+
+.dark button {
+  background: #ffffff;
+  color: #000000;
+}
+

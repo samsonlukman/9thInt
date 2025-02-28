@@ -1,0 +1,39 @@
+Issue:
+
+user.password is likely a hashed password stored in the database.
+password is the plain text password entered by the user.
+A direct comparison (===) between a plain text password and a hashed password will always return false, leading to the "Invalid Credentials" error.
+
+Solution:
+Use bcrypt.compare() to check the password correctly.
+
+Fixed Code:
+js
+Copy
+Edit
+const bcrypt = require("bcrypt");
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ error: "Invalid Credentials" });
+  }
+
+  const isMatch = await bcrypt.compare(password, user.password); // Corrected comparison
+  if (!isMatch) {
+    return res.status(400).json({ error: "Invalid Credentials" });
+  }
+
+  const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+    expiresIn: "1h",
+  });
+
+  res.json({ token, user });
+});
+
+Explanation of Fix:
+Imported bcrypt to use the compare() function.
+Used await bcrypt.compare(password, user.password); to compare the plain text password with the hashed password.
+Now, authentication should work correctly if the user enters the right password.
